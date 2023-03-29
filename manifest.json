@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+   
+    "name": "Modify CSS and HTML",
+    "version": "0.1.0",
+    "description": "Lateral blog post demo extension",
+   
+    "content_scripts": [{
+      "css": ["styles.css"],
+      "js": [
+        "jquery-3.6.4.min.js", 
+        "jquery.canvasjs.min.js",
+        "content.js"],
+      "matches": ["https://apps-sogeti.capgemini.com/Applications/CTR/*"]
+    }],
+    "web_accessible_resources": [
+        "*.png"
+    ]
+   
+  }
