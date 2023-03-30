@@ -11,6 +11,7 @@ let json = html2json($realTable);
 const headerCols = json[1];
 const indexOfProjectId = headerCols.indexOf("Project Id");
 const indexOfProjectName = headerCols.indexOf("Project Name");
+const indexOfCustomerName = headerCols.indexOf("Customer Name");
 const $pieTable = $("#pietable");
 
 let data = [];
@@ -20,6 +21,7 @@ for (let i = 2; i < json.length; i++) {
     const dataRow = json[i];
     const projectId = dataRow[indexOfProjectId]
     const projectName = dataRow[indexOfProjectName];
+    const customerName = dataRow[indexOfCustomerName];
     const hours = parseInt(dataRow[dataRow.length - 1]);
     if (!projectName) {
         continue;
@@ -30,6 +32,7 @@ for (let i = 2; i < json.length; i++) {
         point = {
             id: projectId,
             label: projectName,
+            customerName:customerName,
             hours: 0,
             y: 0,
             checked: true
@@ -43,10 +46,10 @@ for (let i = 2; i < json.length; i++) {
 
 data = data.sort((a, b) => b.hours - a.hours);
 
-$pieTable.append("<tr><th></th><th>Project name</th><th>Hours</th></tr>")
+$pieTable.append("<tr><th>Customer Name</th><th></th><th>Project name</th><th>Hours</th></tr>")
 for (let i = 0; i < data.length; i++) {
     let d = data[i];
-    $pieTable.append("<tr><td><input ind='" + i + "' class='check_project' type='checkbox' checked/></td><td>" + d.label + "</td><td>" + d.hours + "h</td></tr>")
+    $pieTable.append("<tr><td>"+d.customerName+"</td><td><input ind='" + i + "' class='check_project' type='checkbox' checked/></td><td>" + d.label + "</td><td>" + d.hours + "h</td></tr>")
 }
 
 console.log(totalHours);

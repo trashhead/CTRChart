@@ -12,9 +12,22 @@
 }
 .piewrapper{
     flex:1;
+    max-width: 700px;
+}
+#pietable{
+    width:100%;
+    border-collapse: collapse;
 }
 #piechart{
    height:400px;
+}
+#pietable td{
+    height:30px;
+    border-bottom: 1px solid gray;
+}
+
+#pietable th {
+    text-align: left;
 }
 
 .freepik{
