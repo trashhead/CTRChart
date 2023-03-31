@@ -46,10 +46,10 @@ for (let i = 2; i < json.length; i++) {
 
 data = data.sort((a, b) => b.hours - a.hours);
 
-$pieTable.append("<tr><th>Customer Name</th><th></th><th>Project name</th><th>Hours</th></tr>")
+$pieTable.append("<tr><th>"+(indexOfCustomerName!=-1?"Customer Name":"")+"</th><th></th><th>Project name</th><th>Hours</th></tr>")
 for (let i = 0; i < data.length; i++) {
     let d = data[i];
-    $pieTable.append("<tr><td>"+d.customerName+"</td><td><input ind='" + i + "' class='check_project' type='checkbox' checked/></td><td>" + d.label + "</td><td>" + d.hours + "h</td></tr>")
+    $pieTable.append("<tr><td>"+(indexOfCustomerName!=-1?d.customerName:"")+"</td><td><input ind='" + i + "' class='check_project' type='checkbox' checked/></td><td>" + d.label + "</td><td>" + d.hours + "h</td></tr>")
 }
 
 console.log(totalHours);
