@@ -1,5 +1,5 @@
 let $table = $($("table")[4]);
-
+fixDateButtons();
 $table.wrap("<div class='chartwrapper'></div>");
 
 $table.parent().append("<div class='piewrapper'><table id='pietable'></table><div id='piechart' ></div><a class='freepik' href='https://www.flaticon.com/free-icons/pie' title='pie icons'>Pie icons created by Freepik - Flaticon</a></div>")
@@ -14,6 +14,7 @@ const indexOfProjectName = headerCols.indexOf("Project Name");
 const indexOfCustomerName = headerCols.indexOf("Customer Name");
 const $pieTable = $("#pietable");
 
+
 let data = [];
 let totalHours = 0;
 
@@ -23,7 +24,7 @@ for (let i = 2; i < json.length; i++) {
     const projectName = dataRow[indexOfProjectName];
     const customerName = dataRow[indexOfCustomerName];
     const hours = parseInt(dataRow[dataRow.length - 1]);
-    if (!projectName) {
+    if (!projectName || hours == 0) {
         continue;
     }
 
@@ -32,7 +33,7 @@ for (let i = 2; i < json.length; i++) {
         point = {
             id: projectId,
             label: projectName,
-            customerName:customerName,
+            customerName: customerName,
             hours: 0,
             y: 0,
             checked: true
@@ -46,10 +47,10 @@ for (let i = 2; i < json.length; i++) {
 
 data = data.sort((a, b) => b.hours - a.hours);
 
-$pieTable.append("<tr><th>"+(indexOfCustomerName!=-1?"Customer Name":"")+"</th><th></th><th>Project name</th><th>Hours</th></tr>")
+$pieTable.append("<tr><th>" + (indexOfCustomerName != -1 ? "Customer Name" : "") + "</th><th></th><th>Project name</th><th>Hours</th></tr>")
 for (let i = 0; i < data.length; i++) {
     let d = data[i];
-    $pieTable.append("<tr><td>"+(indexOfCustomerName!=-1?d.customerName:"")+"</td><td><input ind='" + i + "' class='check_project' type='checkbox' checked/></td><td>" + d.label + "</td><td>" + d.hours + "h</td></tr>")
+    $pieTable.append("<tr><td>" + (indexOfCustomerName != -1 ? d.customerName : "") + "</td><td><input ind='" + i + "' class='check_project' type='checkbox' checked/></td><td>" + d.label + "</td><td>" + d.hours + "h</td></tr>")
 }
 
 console.log(totalHours);
@@ -85,7 +86,7 @@ drawChart(data);
 function drawChart(data) {
     data = data.filter(d => d.checked);
     data.map((d) => d.y = Math.round(d.hours / totalHours * 100));
-    
+
     var options = {
         title: {
             text: "Project %"
@@ -131,4 +132,42 @@ function findProjectId(projectId, data) {
 
 function checkAll() {
 
+}
+
+function fixDateButtons() {
+    const firstClearDate = $("img[src='/layout/buttons/deleteDisabled.gif']")[0];
+    const secondClearDate = $("img[src='/layout/buttons/deleteDisabled.gif']")[1];
+
+    $(firstClearDate).attr("src", chrome.runtime.getURL("angles-left-solid.svg"));
+    $(secondClearDate).attr("src", chrome.runtime.getURL("angles-right-solid.svg"));
+    $(firstClearDate).parent().replaceWith($("<button type='button'></button>").append(firstClearDate));
+    $(secondClearDate).parent().replaceWith($("<button type='button'></button>").append(secondClearDate));
+
+    $(firstClearDate).parent().insertBefore($(secondClearDate).parent())
+
+
+    $(firstClearDate).parent().click(() => {
+        let startDate = $("input[name='DataFormStartDate']").val();
+        let endDate = $("input[name='DataFormEndDate']").val();
+        let newStartDate = moment(startDate, "DD-MM-YYYY").subtract(1, "month").startOf('month');
+        let newEndDate = moment(endDate, "DD-MM-YYYY").subtract(1, "month").endOf('month');
+
+        $("input[name='DataFormStartDate']").val(newStartDate.format('DD-MM-YYYY'));
+        $("input[name='DataFormEndDate']").val(newEndDate.format('DD-MM-YYYY'));
+
+        $("input[name='StartDate']").val(newStartDate.format('YYYY-MM-DD'));
+        $("input[name='EndDate']").val(newEndDate.format('YYYY-MM-DD'));
+    });
+    $(secondClearDate).parent().click(() => {
+        let startDate = $("input[name='DataFormStartDate']").val();
+        let endDate = $("input[name='DataFormEndDate']").val();
+        let newStartDate = moment(startDate, "DD-MM-YYYY").add(1, "month").startOf('month');
+        let newEndDate = moment(endDate, "DD-MM-YYYY").add(1, "month").endOf('month');
+
+        $("input[name='DataFormStartDate']").val(newStartDate.format('DD-MM-YYYY'));
+        $("input[name='DataFormEndDate']").val(newEndDate.format('DD-MM-YYYY'));
+
+        $("input[name='StartDate']").val(newStartDate.format('YYYY-MM-DD'));
+        $("input[name='EndDate']").val(newEndDate.format('YYYY-MM-DD'));
+    });
 }

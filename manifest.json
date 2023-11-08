@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CTRChart",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Chart for CTR",
   "icons": {
     "512": "pie_512.png"
@@ -14,7 +14,8 @@
       "js": [
         "jquery-3.6.4.min.js",
         "jquery.canvasjs.min.js",
-        "content.js"
+        "content.js",
+        "moment.js"
       ],
       "matches": [
         "https://apps-sogeti.capgemini.com/Applications/CTR/*"
@@ -24,7 +25,9 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "pie.png"
+        "pie.png",
+        "angles-left-solid.svg",
+        "angles-right-solid.svg"
       ],
       "matches": [
         "https://apps-sogeti.capgemini.com/*"
